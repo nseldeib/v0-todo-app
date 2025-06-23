@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Plus, Search, CheckCircle2, Clock, AlertTriangle, Sparkles, TrendingUp } from "lucide-react"
+import { Plus, Search, CheckCircle2, Clock, AlertTriangle, Sparkles, TrendingUp, Filter } from "lucide-react"
 import type { Project, Task } from "@/lib/types"
 
 export default function DashboardPage() {
@@ -180,13 +180,13 @@ export default function DashboardPage() {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "high":
-        return "bg-red-100 text-red-700 border-red-200"
+        return "bg-red-100 text-red-700 border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800/30"
       case "medium":
-        return "bg-yellow-100 text-yellow-700 border-yellow-200"
+        return "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800/30"
       case "low":
-        return "bg-green-100 text-green-700 border-green-200"
+        return "bg-green-100 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800/30"
       default:
-        return "bg-gray-100 text-gray-700 border-gray-200"
+        return "bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800/50 dark:text-gray-400 dark:border-gray-700/50"
     }
   }
 
@@ -206,17 +206,17 @@ export default function DashboardPage() {
   // Show loading while checking authentication
   if (!authChecked || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
         <div className="text-center space-y-6">
-          <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto animate-pulse">
+          <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto animate-pulse">
             <CheckCircle2 className="w-8 h-8 text-white" />
           </div>
           <div className="space-y-2">
-            <h2 className="text-xl font-semibold text-gray-900">Loading TaskFlow</h2>
-            <p className="text-gray-600">Setting up your workspace...</p>
+            <h2 className="text-xl font-semibold text-white">Loading TaskFlow</h2>
+            <p className="text-slate-300">Setting up your workspace...</p>
           </div>
-          <div className="w-48 h-1 bg-gray-200 rounded-full overflow-hidden mx-auto">
-            <div className="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full animate-pulse"></div>
+          <div className="w-48 h-2 bg-slate-700 rounded-full overflow-hidden mx-auto">
+            <div className="w-full h-full bg-gradient-to-r from-purple-500 to-blue-600 rounded-full animate-pulse"></div>
           </div>
         </div>
       </div>
@@ -229,126 +229,178 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Status Bar Safe Area */}
       <div className="h-safe-top bg-transparent"></div>
 
       <DashboardHeader userEmail={user?.email} />
 
-      <div className="px-4 py-6 safe-area-inset space-y-8">
+      <div className="container mx-auto px-4 lg:px-8 py-6 lg:py-8 safe-area-inset space-y-6 lg:space-y-8">
         {/* Welcome Section */}
         <div className="space-y-4">
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-white" />
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+            <div className="flex items-center space-x-3 lg:space-x-4">
+              <div className="w-12 h-12 lg:w-16 lg:h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl lg:rounded-3xl flex items-center justify-center">
+                <Sparkles className="w-6 h-6 lg:w-8 lg:h-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-white">
+                  Welcome back, {user?.email?.split("@")[0]}!
+                </h1>
+                <p className="text-slate-300 lg:text-lg">Ready to tackle your day?</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Welcome back, {user?.email?.split("@")[0]}!</h1>
-              <p className="text-gray-600">Ready to tackle your day?</p>
+
+            {/* Desktop Quick Actions */}
+            <div className="hidden lg:flex items-center space-x-4">
+              <Button
+                onClick={() => setProjectDialogOpen(true)}
+                className="h-12 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-2xl px-6"
+              >
+                <Plus className="w-5 h-5 mr-2" />
+                New Project
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => handleCreateTask()}
+                className="h-12 border-2 border-slate-600 text-slate-300 hover:border-slate-500 hover:bg-slate-800 rounded-2xl px-6"
+              >
+                <Plus className="w-5 h-5 mr-2" />
+                New Task
+              </Button>
             </div>
+          </div>
+
+          {/* Mobile Quick Actions */}
+          <div className="grid grid-cols-2 gap-3 lg:hidden">
+            <Button
+              onClick={() => setProjectDialogOpen(true)}
+              className="h-14 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-2xl shadow-lg shadow-purple-500/25"
+            >
+              <Plus className="w-5 h-5 mr-2" />
+              New Project
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => handleCreateTask()}
+              className="h-14 border-2 border-slate-600 hover:border-slate-500 rounded-2xl"
+            >
+              <Plus className="w-5 h-5 mr-2" />
+              New Task
+            </Button>
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-2 gap-3">
-          <Button
-            onClick={() => setProjectDialogOpen(true)}
-            className="h-14 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-2xl shadow-lg shadow-blue-500/25"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            New Project
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => handleCreateTask()}
-            className="h-14 border-2 border-gray-200 hover:border-gray-300 rounded-2xl"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            New Task
-          </Button>
-        </div>
-
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 h-12 p-1 bg-gray-100 rounded-2xl">
-            <TabsTrigger value="overview" className="rounded-xl font-medium">
+        <Tabs defaultValue="overview" className="space-y-6 lg:space-y-8">
+          <TabsList className="grid w-full grid-cols-3 h-12 lg:h-14 p-1 bg-slate-800/50 rounded-2xl">
+            <TabsTrigger value="overview" className="rounded-xl font-medium text-sm lg:text-base">
               Overview
             </TabsTrigger>
-            <TabsTrigger value="projects" className="rounded-xl font-medium">
+            <TabsTrigger value="projects" className="rounded-xl font-medium text-sm lg:text-base">
               Projects
             </TabsTrigger>
-            <TabsTrigger value="tasks" className="rounded-xl font-medium">
+            <TabsTrigger value="tasks" className="rounded-xl font-medium text-sm lg:text-base">
               Tasks
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="space-y-6">
+          <TabsContent value="overview" className="space-y-6 lg:space-y-8">
             {/* Stats Cards */}
-            <div className="grid grid-cols-2 gap-4">
-              <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-50 to-blue-100">
-                <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                    <TrendingUp className="w-6 h-6 text-white" />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+              <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-900/50 to-blue-800/30 backdrop-blur-sm">
+                <CardContent className="p-4 lg:p-6 text-center">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <TrendingUp className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
                   </div>
-                  <div className="text-2xl font-bold text-blue-900">{projects.length}</div>
-                  <div className="text-sm text-blue-700">Active Projects</div>
+                  <div className="text-xl lg:text-2xl font-bold text-blue-100">{projects.length}</div>
+                  <div className="text-xs lg:text-sm text-blue-300">Active Projects</div>
                 </CardContent>
               </Card>
 
-              <Card className="border-0 shadow-lg bg-gradient-to-br from-green-50 to-green-100">
-                <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 bg-green-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                    <CheckCircle2 className="w-6 h-6 text-white" />
+              <Card className="border-0 shadow-lg bg-gradient-to-br from-green-900/50 to-green-800/30 backdrop-blur-sm">
+                <CardContent className="p-4 lg:p-6 text-center">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-green-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <CheckCircle2 className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
                   </div>
-                  <div className="text-2xl font-bold text-green-900">
+                  <div className="text-xl lg:text-2xl font-bold text-green-100">
                     {tasks.filter((t) => t.status === "completed").length}
                   </div>
-                  <div className="text-sm text-green-700">Completed</div>
+                  <div className="text-xs lg:text-sm text-green-300">Completed</div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-0 shadow-lg bg-gradient-to-br from-yellow-900/50 to-yellow-800/30 backdrop-blur-sm">
+                <CardContent className="p-4 lg:p-6 text-center">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-yellow-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <Clock className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
+                  </div>
+                  <div className="text-xl lg:text-2xl font-bold text-yellow-100">
+                    {tasks.filter((t) => t.status === "in_progress").length}
+                  </div>
+                  <div className="text-xs lg:text-sm text-yellow-300">In Progress</div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-0 shadow-lg bg-gradient-to-br from-purple-900/50 to-purple-800/30 backdrop-blur-sm">
+                <CardContent className="p-4 lg:p-6 text-center">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <AlertTriangle className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
+                  </div>
+                  <div className="text-xl lg:text-2xl font-bold text-purple-100">
+                    {tasks.filter((t) => t.status === "todo").length}
+                  </div>
+                  <div className="text-xs lg:text-sm text-purple-300">To Do</div>
                 </CardContent>
               </Card>
             </div>
 
-            {/* Daily Recap */}
-            <DailyRecap />
+            {/* Main Content Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+              {/* Daily Recap */}
+              <div className="lg:col-span-1">
+                <DailyRecap />
+              </div>
 
-            {/* Recent Projects */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-gray-900">Recent Projects</h2>
-              <div className="space-y-4">
-                {projects.slice(0, 3).map((project) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    tasks={getTasksByProject(project.id)}
-                    onUpdate={fetchData}
-                    onCreateTask={handleCreateTask}
-                  />
-                ))}
-                {projects.length === 0 && (
-                  <Card className="border-0 shadow-lg bg-white">
-                    <CardContent className="p-8 text-center space-y-4">
-                      <div className="w-16 h-16 bg-gray-100 rounded-3xl flex items-center justify-center mx-auto">
-                        <Plus className="w-8 h-8 text-gray-400" />
-                      </div>
-                      <div className="space-y-2">
-                        <h3 className="text-lg font-semibold text-gray-900">No projects yet</h3>
-                        <p className="text-gray-600 text-sm">Create your first project to get started</p>
-                      </div>
-                      <Button
-                        onClick={() => setProjectDialogOpen(true)}
-                        className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl"
-                      >
-                        <Plus className="w-5 h-5 mr-2" />
-                        Create Project
-                      </Button>
-                    </CardContent>
-                  </Card>
-                )}
+              {/* Recent Projects */}
+              <div className="lg:col-span-2 space-y-4 lg:space-y-6">
+                <h2 className="text-lg lg:text-xl font-semibold text-white">Recent Projects</h2>
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6">
+                  {projects.slice(0, 4).map((project) => (
+                    <ProjectCard
+                      key={project.id}
+                      project={project}
+                      tasks={getTasksByProject(project.id)}
+                      onUpdate={fetchData}
+                      onCreateTask={handleCreateTask}
+                    />
+                  ))}
+                  {projects.length === 0 && (
+                    <Card className="border-0 shadow-lg bg-slate-800/50 backdrop-blur-sm xl:col-span-2">
+                      <CardContent className="p-6 lg:p-8 text-center space-y-4">
+                        <div className="w-16 h-16 bg-slate-700 rounded-3xl flex items-center justify-center mx-auto">
+                          <Plus className="w-8 h-8 text-slate-400" />
+                        </div>
+                        <div className="space-y-2">
+                          <h3 className="text-lg font-semibold text-white">No projects yet</h3>
+                          <p className="text-slate-300 text-sm">Create your first project to get started</p>
+                        </div>
+                        <Button
+                          onClick={() => setProjectDialogOpen(true)}
+                          className="w-full lg:w-auto h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl"
+                        >
+                          <Plus className="w-5 h-5 mr-2" />
+                          Create Project
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
               </div>
             </div>
           </TabsContent>
 
           <TabsContent value="projects" className="space-y-6">
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
               {projects.map((project) => (
                 <ProjectCard
                   key={project.id}
@@ -360,21 +412,23 @@ export default function DashboardPage() {
               ))}
 
               {projects.length === 0 && (
-                <Card className="border-0 shadow-lg bg-white">
-                  <CardContent className="p-8 text-center space-y-4">
-                    <div className="w-16 h-16 bg-gray-100 rounded-3xl flex items-center justify-center mx-auto">
-                      <Plus className="w-8 h-8 text-gray-400" />
+                <Card className="border-0 shadow-lg bg-slate-800/50 backdrop-blur-sm col-span-full">
+                  <CardContent className="p-8 lg:p-12 text-center space-y-6">
+                    <div className="w-20 h-20 bg-slate-700 rounded-3xl flex items-center justify-center mx-auto">
+                      <Plus className="w-10 h-10 text-slate-400" />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-lg font-semibold text-gray-900">No projects yet</h3>
-                      <p className="text-gray-600 text-sm">Create your first project to get started</p>
+                      <h3 className="text-xl lg:text-2xl font-semibold text-white">No projects yet</h3>
+                      <p className="text-slate-300 lg:text-lg max-w-md mx-auto">
+                        Create your first project to start organizing your tasks and boost your productivity
+                      </p>
                     </div>
                     <Button
                       onClick={() => setProjectDialogOpen(true)}
-                      className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl"
+                      className="h-12 lg:h-14 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl px-8 text-base lg:text-lg"
                     >
                       <Plus className="w-5 h-5 mr-2" />
-                      Create Project
+                      Create Your First Project
                     </Button>
                   </CardContent>
                 </Card>
@@ -385,85 +439,109 @@ export default function DashboardPage() {
           <TabsContent value="tasks" className="space-y-6">
             {/* Search and Filters */}
             <div className="space-y-4">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <Input
-                  placeholder="Search tasks..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="h-14 pl-12 text-base border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+              <div className="flex flex-col lg:flex-row gap-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+                  <Input
+                    placeholder="Search tasks..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="h-12 lg:h-14 pl-12 text-base bg-slate-800/50 border-slate-600 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  />
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowMobileFilters(!showMobileFilters)}
+                  className="lg:hidden h-12 border-slate-600 text-slate-300 rounded-2xl"
+                >
+                  <Filter className="w-5 h-5 mr-2" />
+                  Filters
+                </Button>
               </div>
 
               {/* Filter Buttons */}
-              <div className="flex space-x-2 overflow-x-auto pb-2">
-                {[
-                  { key: "all", label: "All", count: tasks.length },
-                  { key: "todo", label: "To Do", count: tasks.filter((t) => t.status === "todo").length },
-                  {
-                    key: "in_progress",
-                    label: "In Progress",
-                    count: tasks.filter((t) => t.status === "in_progress").length,
-                  },
-                  { key: "completed", label: "Done", count: tasks.filter((t) => t.status === "completed").length },
-                ].map((filter) => (
-                  <Button
-                    key={filter.key}
-                    variant={statusFilter === filter.key ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setStatusFilter(filter.key)}
-                    className={`flex-shrink-0 h-10 px-4 rounded-2xl font-medium ${
-                      statusFilter === filter.key
-                        ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25"
-                        : "border-gray-200 hover:border-gray-300"
-                    }`}
-                  >
-                    {filter.label}
-                    <Badge variant="secondary" className="ml-2 bg-white/20 text-current border-0">
-                      {filter.count}
-                    </Badge>
-                  </Button>
-                ))}
+              <div className={`${showMobileFilters ? "block" : "hidden"} lg:block`}>
+                <div className="flex flex-wrap gap-2 lg:gap-3">
+                  {[
+                    { key: "all", label: "All", count: tasks.length },
+                    { key: "todo", label: "To Do", count: tasks.filter((t) => t.status === "todo").length },
+                    {
+                      key: "in_progress",
+                      label: "In Progress",
+                      count: tasks.filter((t) => t.status === "in_progress").length,
+                    },
+                    { key: "completed", label: "Done", count: tasks.filter((t) => t.status === "completed").length },
+                  ].map((filter) => (
+                    <Button
+                      key={filter.key}
+                      variant={statusFilter === filter.key ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setStatusFilter(filter.key)}
+                      className={`flex-shrink-0 h-10 lg:h-12 px-4 lg:px-6 rounded-2xl font-medium ${
+                        statusFilter === filter.key
+                          ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25"
+                          : "border-slate-600 text-slate-300 hover:border-slate-500 hover:bg-slate-800"
+                      }`}
+                    >
+                      {filter.label}
+                      <Badge variant="secondary" className="ml-2 bg-white/20 text-current border-0 text-xs lg:text-sm">
+                        {filter.count}
+                      </Badge>
+                    </Button>
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Tasks List */}
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
               {filteredTasks.map((task) => (
-                <Card key={task.id} className="border-0 shadow-lg bg-white">
-                  <CardContent className="p-6">
-                    <div className="flex items-start space-x-4">
-                      <div className="flex-shrink-0 mt-1">{getStatusIcon(task.status)}</div>
-                      <div className="flex-1 min-w-0 space-y-3">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center space-x-2 mb-1">
-                              {task.emoji && <span className="text-lg">{task.emoji}</span>}
-                              {task.is_important && <span className="text-lg">⭐</span>}
-                            </div>
-                            <h3 className="font-semibold text-gray-900 text-lg leading-tight mb-2">{task.title}</h3>
-                            {task.description && (
-                              <p className="text-gray-600 text-sm leading-relaxed mb-3">{task.description}</p>
+                <Card
+                  key={task.id}
+                  className="border-0 shadow-lg bg-slate-800/50 backdrop-blur-sm hover:bg-slate-800/70 transition-all duration-200"
+                >
+                  <CardContent className="p-4 lg:p-6">
+                    <div className="space-y-4">
+                      <div className="flex items-start space-x-3">
+                        <div className="flex-shrink-0 mt-1">{getStatusIcon(task.status)}</div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center space-x-2 mb-2">
+                            {task.emoji && <span className="text-lg">{task.emoji}</span>}
+                            {task.is_important && <span className="text-lg">⭐</span>}
+                          </div>
+                          <h3 className="font-semibold text-white text-base lg:text-lg leading-tight mb-2 line-clamp-2">
+                            {task.title}
+                          </h3>
+                          {task.description && (
+                            <p className="text-slate-300 text-sm leading-relaxed mb-3 line-clamp-2">
+                              {task.description}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between text-sm">
+                          <div className="flex items-center space-x-2 text-slate-400">
+                            {task.project && (
+                              <div className="flex items-center space-x-1">
+                                <span className="text-base">{task.project.emoji || "📋"}</span>
+                                <span className="font-medium truncate max-w-24">{task.project.name}</span>
+                              </div>
+                            )}
+                            {task.due_date && (
+                              <span className="text-xs">Due {new Date(task.due_date).toLocaleDateString()}</span>
                             )}
                           </div>
                         </div>
 
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-3 text-sm text-gray-500">
-                            {task.project && (
-                              <div className="flex items-center space-x-1">
-                                <span className="text-base">{task.project.emoji || "📋"}</span>
-                                <span className="font-medium">{task.project.name}</span>
-                              </div>
-                            )}
-                            {task.due_date && <span>Due {new Date(task.due_date).toLocaleDateString()}</span>}
-                          </div>
-
-                          <div className="flex items-center space-x-2">
-                            <Badge className={`text-xs font-medium border ${getPriorityColor(task.priority)}`}>
-                              {task.priority}
-                            </Badge>
-                          </div>
+                          <Badge className={`text-xs font-medium border ${getPriorityColor(task.priority)}`}>
+                            {task.priority}
+                          </Badge>
+                          <Badge variant="secondary" className="text-xs bg-slate-700 text-slate-300">
+                            {task.status.replace("_", " ")}
+                          </Badge>
                         </div>
                       </div>
                     </div>
@@ -472,21 +550,23 @@ export default function DashboardPage() {
               ))}
 
               {filteredTasks.length === 0 && (
-                <Card className="border-0 shadow-lg bg-white">
-                  <CardContent className="p-8 text-center space-y-4">
-                    <div className="w-16 h-16 bg-gray-100 rounded-3xl flex items-center justify-center mx-auto">
-                      <CheckCircle2 className="w-8 h-8 text-gray-400" />
+                <Card className="border-0 shadow-lg bg-slate-800/50 backdrop-blur-sm col-span-full">
+                  <CardContent className="p-8 lg:p-12 text-center space-y-6">
+                    <div className="w-20 h-20 bg-slate-700 rounded-3xl flex items-center justify-center mx-auto">
+                      <CheckCircle2 className="w-10 h-10 text-slate-400" />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-lg font-semibold text-gray-900">No tasks found</h3>
-                      <p className="text-gray-600 text-sm">Try adjusting your filters or create a new task</p>
+                      <h3 className="text-xl lg:text-2xl font-semibold text-white">No tasks found</h3>
+                      <p className="text-slate-300 lg:text-lg max-w-md mx-auto">
+                        Try adjusting your filters or create a new task to get started
+                      </p>
                     </div>
                     <Button
                       onClick={() => handleCreateTask()}
-                      className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl"
+                      className="h-12 lg:h-14 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl px-8 text-base lg:text-lg"
                     >
                       <Plus className="w-5 h-5 mr-2" />
-                      Create Task
+                      Create Your First Task
                     </Button>
                   </CardContent>
                 </Card>
@@ -497,11 +577,11 @@ export default function DashboardPage() {
       </div>
 
       {/* Floating Action Button for Mobile */}
-      <div className="fixed bottom-6 right-4 z-40">
+      <div className="fixed bottom-6 right-4 z-40 lg:hidden">
         <Button
           onClick={() => handleCreateTask()}
           size="lg"
-          className="w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-2xl shadow-blue-500/25"
+          className="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-2xl shadow-purple-500/25"
         >
           <Plus className="w-6 h-6" />
         </Button>
