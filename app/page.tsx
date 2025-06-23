@@ -121,13 +121,13 @@ export default function HomePage() {
                       className="text-slate-300 font-medium hover:text-white hover:bg-slate-800/50 rounded-xl"
                       asChild
                     >
-                      <Link href="https://github.com" target="_blank">
+                      <Link href="https://github.com/nseldeib/v0-todo-app" target="_blank">
                         <Github className="w-4 h-4" />
                       </Link>
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>View on GitHub (Coming Soon)</p>
+                    <p>View on GitHub</p>
                   </TooltipContent>
                 </Tooltip>
                 <Link href="/auth/login">
