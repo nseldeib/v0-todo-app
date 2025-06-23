@@ -6,8 +6,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import { Separator } from "@/components/ui/separator"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, Edit, Trash2, Plus } from "lucide-react"
+import { MoreHorizontal, Edit, Trash2, Plus, Calendar, Target } from "lucide-react"
 import type { Project, Task } from "@/lib/types"
 
 interface ProjectCardProps {
@@ -46,104 +49,141 @@ export function ProjectCard({ project, tasks, onUpdate, onCreateTask }: ProjectC
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "high":
-        return "bg-red-900/20 text-red-400"
+        return "bg-red-900/20 text-red-400 border-red-800/30"
       case "medium":
-        return "bg-yellow-900/20 text-yellow-400"
+        return "bg-yellow-900/20 text-yellow-400 border-yellow-800/30"
       case "low":
-        return "bg-green-900/20 text-green-400"
+        return "bg-green-900/20 text-green-400 border-green-800/30"
       default:
-        return "bg-slate-700/50 text-slate-400"
+        return "bg-slate-700/50 text-slate-400 border-slate-600/50"
     }
   }
 
   return (
-    <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700/50 shadow-lg hover:bg-slate-800/70 transition-all duration-300 group">
-      <CardHeader className="pb-3 lg:pb-4">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3 lg:gap-4">
-            <div className="text-2xl lg:text-3xl flex-shrink-0">{project.emoji || "📋"}</div>
-            <div className="min-w-0">
-              <CardTitle className="text-lg lg:text-xl text-white truncate">{project.name}</CardTitle>
-              {project.description && (
-                <CardDescription className="mt-1 text-slate-300 line-clamp-2">{project.description}</CardDescription>
-              )}
+    <TooltipProvider>
+      <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-700/50 shadow-lg hover:bg-slate-800/70 hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300 group">
+        <CardHeader className="pb-3 lg:pb-4">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3 lg:gap-4">
+              <Avatar className="w-10 h-10 lg:w-12 lg:h-12">
+                <AvatarFallback className="text-2xl lg:text-3xl bg-gradient-to-br from-slate-700 to-slate-600 border border-slate-600">
+                  {project.emoji || "📋"}
+                </AvatarFallback>
+              </Avatar>
+              <div className="min-w-0">
+                <CardTitle className="text-lg lg:text-xl text-white truncate">{project.name}</CardTitle>
+                {project.description && (
+                  <CardDescription className="mt-1 text-slate-300 line-clamp-2">{project.description}</CardDescription>
+                )}
+              </div>
             </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 lg:w-10 lg:h-10 rounded-xl bg-slate-700/50 hover:bg-slate-600/50"
+                    >
+                      <MoreHorizontal className="w-4 h-4 text-slate-300" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Project options</p>
+                  </TooltipContent>
+                </Tooltip>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="bg-slate-800/95 border-slate-700/50 backdrop-blur-xl">
+                <DropdownMenuItem className="text-slate-200 hover:bg-slate-700/50 focus:bg-slate-700/50">
+                  <Edit className="w-4 h-4 mr-2" />
+                  Edit Project
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={handleDelete}
+                  disabled={loading}
+                  className="text-red-400 hover:bg-red-900/20 focus:bg-red-900/20"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Delete Project
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 lg:w-10 lg:h-10 rounded-xl bg-slate-700/50 hover:bg-slate-600/50"
-              >
-                <MoreHorizontal className="w-4 h-4 text-slate-300" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-slate-800 border-slate-700">
-              <DropdownMenuItem className="text-slate-200 hover:bg-slate-700">
-                <Edit className="w-4 h-4 mr-2" />
-                Edit Project
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleDelete} disabled={loading} className="text-red-400 hover:bg-red-900/20">
-                <Trash2 className="w-4 h-4 mr-2" />
-                Delete Project
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-4 lg:space-y-6">
-        {/* Progress */}
-        <div className="space-y-2 lg:space-y-3">
-          <div className="flex items-center justify-between text-sm lg:text-base">
-            <span className="text-slate-200">Progress</span>
-            <span className="text-slate-400">
-              {completedTasks}/{totalTasks} tasks
-            </span>
-          </div>
-          <Progress value={progress} className="h-2 lg:h-3 bg-slate-700" />
-        </div>
-
-        {/* Recent Tasks */}
-        {tasks.length > 0 && (
+        </CardHeader>
+        <CardContent className="space-y-4 lg:space-y-6">
+          {/* Progress */}
           <div className="space-y-2 lg:space-y-3">
-            <h4 className="text-sm lg:text-base font-medium text-slate-200">Recent Tasks</h4>
-            <div className="space-y-2">
-              {tasks.slice(0, 3).map((task) => (
-                <div key={task.id} className="flex items-center gap-2 lg:gap-3 text-sm lg:text-base">
-                  <div
-                    className={`w-2 h-2 lg:w-3 lg:h-3 rounded-full ${
-                      task.status === "completed"
-                        ? "bg-green-500"
-                        : task.status === "in_progress"
-                          ? "bg-blue-500"
-                          : "bg-slate-500"
-                    }`}
-                  />
-                  <span className="flex-1 truncate text-slate-300">{task.title}</span>
-                  <Badge variant="secondary" className={`text-xs ${getPriorityColor(task.priority)}`}>
-                    {task.priority}
-                  </Badge>
-                </div>
-              ))}
-              {tasks.length > 3 && <p className="text-xs lg:text-sm text-slate-400">+{tasks.length - 3} more tasks</p>}
+            <div className="flex items-center justify-between text-sm lg:text-base">
+              <span className="text-slate-200 flex items-center">
+                <Target className="w-4 h-4 mr-1" />
+                Progress
+              </span>
+              <span className="text-slate-400">
+                {completedTasks}/{totalTasks} tasks
+              </span>
             </div>
+            <Progress value={progress} className="h-2 lg:h-3 bg-slate-700/50" />
           </div>
-        )}
 
-        {/* Actions */}
-        <div className="pt-2">
-          <Button
-            onClick={() => onCreateTask(project.id)}
-            variant="outline"
-            size="sm"
-            className="w-full h-10 lg:h-12 border-slate-600 text-slate-300 hover:bg-slate-700 hover:border-slate-500 rounded-xl"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Task
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+          <Separator className="bg-slate-700/50" />
+
+          {/* Recent Tasks */}
+          {tasks.length > 0 && (
+            <div className="space-y-2 lg:space-y-3">
+              <h4 className="text-sm lg:text-base font-medium text-slate-200 flex items-center">
+                <Calendar className="w-4 h-4 mr-1" />
+                Recent Tasks
+              </h4>
+              <div className="space-y-2">
+                {tasks.slice(0, 3).map((task) => (
+                  <div
+                    key={task.id}
+                    className="flex items-center gap-2 lg:gap-3 text-sm lg:text-base p-2 rounded-lg bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
+                  >
+                    <div
+                      className={`w-2 h-2 lg:w-3 lg:h-3 rounded-full ${
+                        task.status === "completed"
+                          ? "bg-green-500"
+                          : task.status === "in_progress"
+                            ? "bg-blue-500"
+                            : "bg-slate-500"
+                      }`}
+                    />
+                    <span className="flex-1 truncate text-slate-300">{task.title}</span>
+                    <Badge variant="secondary" className={`text-xs border ${getPriorityColor(task.priority)}`}>
+                      {task.priority}
+                    </Badge>
+                  </div>
+                ))}
+                {tasks.length > 3 && (
+                  <p className="text-xs lg:text-sm text-slate-400 text-center py-1">+{tasks.length - 3} more tasks</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Actions */}
+          <div className="pt-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={() => onCreateTask(project.id)}
+                  variant="outline"
+                  size="sm"
+                  className="w-full h-10 lg:h-12 border-slate-600 text-slate-300 hover:bg-slate-700 hover:border-slate-500 rounded-xl group"
+                >
+                  <Plus className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                  Add Task
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Add a new task to this project</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </CardContent>
+      </Card>
+    </TooltipProvider>
   )
 }
