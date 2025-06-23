@@ -91,6 +91,10 @@ export default function SignUpPage() {
             <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
               <div className="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full animate-pulse"></div>
             </div>
+            <h2 className="text-2xl font-bold">Welcome to TaskFlow!</h2>
+            <p className="text-muted-foreground">
+              Your account has been created successfully. Redirecting to your dashboard...
+            </p>
           </CardContent>
         </Card>
       </div>

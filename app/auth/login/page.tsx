@@ -52,6 +52,7 @@ export default function LoginPage() {
   }
 
   return (
+
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Status Bar Safe Area */}
       <div className="h-safe-top bg-transparent"></div>
@@ -85,6 +86,7 @@ export default function LoginPage() {
             <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
             <p className="text-gray-600">Sign in to continue to TaskFlow</p>
           </div>
+
 
           {/* Login Form */}
           <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
@@ -192,9 +194,6 @@ export default function LoginPage() {
           </Card>
         </div>
       </div>
-
-      {/* Bottom Safe Area */}
-      <div className="h-safe-bottom bg-transparent"></div>
     </div>
   )
 }

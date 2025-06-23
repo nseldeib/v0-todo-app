@@ -80,6 +80,27 @@ export default function DashboardPage() {
 
   const checkUser = async () => {
     try {
+      // First check if we have a session
+      const {
+        data: { session },
+        error: sessionError,
+      } = await supabase.auth.getSession()
+
+      if (sessionError) {
+        console.error("Session error:", sessionError)
+        setAuthChecked(true)
+        router.push("/auth/login")
+        return
+      }
+
+      if (!session) {
+        console.log("No session found")
+        setAuthChecked(true)
+        router.push("/auth/login")
+        return
+      }
+
+      // If we have a session, get the user
       const {
         data: { session },
         error: sessionError,
