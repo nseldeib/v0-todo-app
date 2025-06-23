@@ -1,15 +1,12 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 
-const inter = Inter({ subsets: ["latin"] })
-
 export const metadata: Metadata = {
-  title: "TaskFlow - Manage Your Projects & Tasks",
-  description: "A modern task management application built with Next.js and Supabase",
-    generator: 'v0.dev'
+  title: "TaskFlow - Mindful Task Management",
+  description: "A zen approach to productivity and task management",
+  generator: "v0.dev",
 }
 
 export default function RootLayout({
@@ -19,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className="antialiased">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           {children}
         </ThemeProvider>
