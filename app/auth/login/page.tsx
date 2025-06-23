@@ -1,199 +1,92 @@
-"use client"
-
-import type React from "react"
-
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import type { Metadata } from "next"
 import Link from "next/link"
-import { createClient } from "@/lib/supabase/client"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { CheckCircle2, Eye, EyeOff, ArrowLeft, Mail, Lock } from "lucide-react"
 
-export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const router = useRouter()
-  const supabase = createClient()
+export const metadata: Metadata = {
+  title: "Login",
+  description: "Login to your account",
+}
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
-
-      if (error) {
-        setError(error.message)
-        return
-      }
-
-      if (data.user) {
-        setTimeout(() => {
-          router.push("/dashboard")
-          router.refresh()
-        }, 100)
-      }
-    } catch (error) {
-      setError("Something went wrong. Please try again.")
-    } finally {
-      setLoading(false)
-    }
-  }
-
+const LoginPage = () => {
   return (
-
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Status Bar Safe Area */}
-      <div className="h-safe-top bg-transparent"></div>
-
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
-        <div className="px-4 py-4 safe-area-inset">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gray-100 rounded-xl flex items-center justify-center">
-                <ArrowLeft className="w-4 h-4 text-gray-600" />
-              </div>
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                <CheckCircle2 className="w-4 h-4 text-white" />
-              </div>
-            </Link>
-            <Link href="/auth/signup">
-              <Button variant="ghost" size="sm" className="text-blue-600 font-medium">
-                Sign Up
-              </Button>
-            </Link>
-          </div>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
+      <div className="relative w-full max-w-md p-6 space-y-8 overflow-hidden rounded-xl shadow-2xl bg-slate-900/80 backdrop-blur-xl border border-slate-700/50">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 -translate-x-1/2 -translate-y-1/4 blur-2xl opacity-25 animate-pulse-slow">
+          <div className="aspect-[4/1] w-[400px] bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
         </div>
-      </header>
-
-      {/* Main Content */}
-      <div className="px-4 pt-8 safe-area-inset">
-        <div className="max-w-sm mx-auto space-y-8">
-          {/* Welcome Section */}
-          <div className="text-center space-y-3">
-            <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
-            <p className="text-gray-600">Sign in to continue to TaskFlow</p>
-          </div>
-
-
-          {/* Login Form */}
-          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
-            <CardContent className="p-6">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {error && (
-                  <Alert variant="destructive" className="border-red-200 bg-red-50">
-                    <AlertDescription className="text-red-700">{error}</AlertDescription>
-                  </Alert>
-                )}
-
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                      Email
-                    </Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                      <Input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="your@email.com"
-                        required
-                        disabled={loading}
-                        className="h-14 pl-12 text-base border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                      Password
-                    </Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                      <Input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Enter your password"
-                        required
-                        disabled={loading}
-                        className="h-14 pl-12 pr-12 text-base border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 h-10 w-10 rounded-xl hover:bg-gray-100"
-                        onClick={() => setShowPassword(!showPassword)}
-                        disabled={loading}
-                      >
-                        {showPassword ? (
-                          <EyeOff className="w-5 h-5 text-gray-400" />
-                        ) : (
-                          <Eye className="w-5 h-5 text-gray-400" />
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full h-14 text-base font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-2xl shadow-lg shadow-blue-500/25"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <div className="flex items-center space-x-2">
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      <span>Signing In...</span>
-                    </div>
-                  ) : (
-                    "Sign In"
-                  )}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-
-          {/* Sign Up Link */}
-          <div className="text-center">
-            <p className="text-gray-600">
-              Don't have an account?{" "}
-              <Link href="/auth/signup" className="font-semibold text-blue-600 hover:text-blue-700">
-                Sign up for free
-              </Link>
-            </p>
-          </div>
-
-          {/* Demo Account */}
-          <Card className="border-0 bg-gray-50">
-            <CardContent className="p-4">
-              <div className="text-center space-y-2">
-                <h3 className="font-semibold text-gray-900 text-sm">Try the Demo</h3>
-                <div className="text-xs text-gray-600 space-y-1">
-                  <div>Email: demo@taskflow.com</div>
-                  <div>Password: demo123</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="absolute inset-0 -translate-x-1/4 -translate-y-1/2 blur-3xl opacity-25 animate-pulse-normal">
+          <div className="aspect-square w-[240px] bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
         </div>
+        <div className="absolute inset-0 translate-x-1/4 translate-y-1/2 blur-3xl opacity-25 animate-pulse-fast">
+          <div className="aspect-square w-[320px] bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
+        </div>
+
+        <div className="text-center">
+          <h2 className="mt-6 text-3xl font-bold text-white">Welcome back!</h2>
+          <p className="mt-2 text-slate-300">Login to access your account.</p>
+        </div>
+        <form className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block mb-2 text-sm font-medium text-white">
+              Your email
+            </label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              className="block w-full p-3 text-white border border-slate-600 rounded-md shadow-sm bg-slate-800/50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
+              placeholder="name@example.com"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="block mb-2 text-sm font-medium text-white">
+              Your password
+            </label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="••••••••"
+              className="block w-full p-3 text-white border border-slate-600 rounded-md shadow-sm bg-slate-800/50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
+              required
+            />
+          </div>
+          <div className="flex items-start">
+            <div className="flex items-center h-5">
+              <input
+                id="remember"
+                aria-describedby="remember"
+                type="checkbox"
+                className="w-4 h-4 border border-slate-600 rounded bg-slate-800/50 focus:ring-3 focus:ring-cyan-500"
+                required
+              />
+            </div>
+            <div className="ml-3 text-sm">
+              <label htmlFor="remember" className="text-slate-300">
+                Remember me
+              </label>
+            </div>
+            <Link href="/auth/forgot-password" className="ml-auto text-sm text-cyan-400 hover:text-cyan-300">
+              Forgot Password?
+            </Link>
+          </div>
+          <button
+            type="submit"
+            className="w-full px-5 py-3 text-base font-medium text-white rounded-md bg-gradient-to-r from-cyan-600 via-purple-600 to-pink-600 hover:from-cyan-700 hover:via-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+          >
+            Login to your account
+          </button>
+          <div className="text-sm font-medium text-slate-400">
+            Not registered?{" "}
+            <Link href="/auth/register" className="text-cyan-400 hover:text-cyan-300">
+              Create account
+            </Link>
+          </div>
+        </form>
       </div>
     </div>
   )
 }
+
+export default LoginPage
