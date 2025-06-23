@@ -102,25 +102,6 @@ export default function DashboardPage() {
 
       // If we have a session, get the user
       const {
-        data: { session },
-        error: sessionError,
-      } = await supabase.auth.getSession()
-
-      if (sessionError) {
-        console.error("Session error:", sessionError)
-        setAuthChecked(true)
-        router.push("/auth/login")
-        return
-      }
-
-      if (!session) {
-        console.log("No session found")
-        setAuthChecked(true)
-        router.push("/auth/login")
-        return
-      }
-
-      const {
         data: { user },
         error: userError,
       } = await supabase.auth.getUser()
