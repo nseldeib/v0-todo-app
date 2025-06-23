@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { CheckCircle2, LogOut, Settings, User } from "lucide-react"
+import { CheckCircle2, LogOut, Settings, User, Bell } from "lucide-react"
 
 interface DashboardHeaderProps {
   userEmail?: string
@@ -35,48 +35,71 @@ export function DashboardHeader({ userEmail }: DashboardHeaderProps) {
   }
 
   return (
-    <header className="border-b border-border/50 bg-card/30 backdrop-blur-sm">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <CheckCircle2 className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">
-            TaskFlow
-          </h1>
-        </div>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-              <Avatar className="h-10 w-10">
-                <AvatarFallback className="bg-primary text-primary-foreground">
-                  {userEmail ? getInitials(userEmail) : "U"}
-                </AvatarFallback>
-              </Avatar>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="end" forceMount>
-            <div className="flex flex-col space-y-1 p-2">
-              <p className="text-sm font-medium leading-none">{userEmail}</p>
-              <p className="text-xs leading-none text-muted-foreground">TaskFlow User</p>
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
+      <div className="px-4 py-4 safe-area-inset">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <CheckCircle2 className="w-5 h-5 text-white" />
             </div>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Settings</span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleSignOut} disabled={loading}>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <div>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                TaskFlow
+              </h1>
+              <p className="text-xs text-gray-500 -mt-1">Good morning!</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            {/* Notifications */}
+            <Button variant="ghost" size="sm" className="w-10 h-10 rounded-2xl bg-gray-50 hover:bg-gray-100">
+              <Bell className="w-5 h-5 text-gray-600" />
+            </Button>
+
+            {/* Profile Menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative w-10 h-10 rounded-2xl p-0">
+                  <Avatar className="w-10 h-10">
+                    <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-semibold">
+                      {userEmail ? getInitials(userEmail) : "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-64 mr-4 mt-2 border-0 shadow-2xl bg-white/95 backdrop-blur-xl rounded-3xl p-2"
+                align="end"
+              >
+                <div className="px-4 py-3 border-b border-gray-100">
+                  <p className="text-sm font-semibold text-gray-900 truncate">{userEmail}</p>
+                  <p className="text-xs text-gray-500">TaskFlow User</p>
+                </div>
+                <div className="py-2">
+                  <DropdownMenuItem className="rounded-2xl mx-2 my-1 h-12 cursor-pointer hover:bg-gray-50">
+                    <User className="mr-3 h-5 w-5 text-gray-600" />
+                    <span className="font-medium">Profile</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="rounded-2xl mx-2 my-1 h-12 cursor-pointer hover:bg-gray-50">
+                    <Settings className="mr-3 h-5 w-5 text-gray-600" />
+                    <span className="font-medium">Settings</span>
+                  </DropdownMenuItem>
+                </div>
+                <DropdownMenuSeparator className="mx-2 bg-gray-100" />
+                <div className="py-2">
+                  <DropdownMenuItem
+                    onClick={handleSignOut}
+                    disabled={loading}
+                    className="rounded-2xl mx-2 my-1 h-12 cursor-pointer hover:bg-red-50 text-red-600"
+                  >
+                    <LogOut className="mr-3 h-5 w-5" />
+                    <span className="font-medium">Sign Out</span>
+                  </DropdownMenuItem>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
       </div>
     </header>
   )
