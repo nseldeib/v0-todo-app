@@ -86,7 +86,7 @@ export function ProjectDialog({ open, onOpenChange, onSuccess, project }: Projec
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] glass-effect">
         <DialogHeader>
           <DialogTitle>{project ? "Edit Project" : "Create New Project"}</DialogTitle>
           <DialogDescription>
@@ -123,7 +123,7 @@ export function ProjectDialog({ open, onOpenChange, onSuccess, project }: Projec
                     key={emojiOption}
                     type="button"
                     className={`w-10 h-10 rounded-lg border-2 transition-all text-xl hover:scale-105 ${
-                      emoji === emojiOption ? "border-primary scale-110" : "border-border"
+                      emoji === emojiOption ? "border-primary scale-110 glow-effect" : "border-border"
                     }`}
                     onClick={() => setEmoji(emojiOption)}
                   >
@@ -137,7 +137,7 @@ export function ProjectDialog({ open, onOpenChange, onSuccess, project }: Projec
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading} className="glow-effect">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {project ? "Update Project" : "Create Project"}
             </Button>

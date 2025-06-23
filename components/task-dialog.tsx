@@ -115,7 +115,7 @@ export function TaskDialog({ open, onOpenChange, onSuccess, task, projectId, pro
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] glass-effect">
         <DialogHeader>
           <DialogTitle>{task ? "Edit Task" : "Create New Task"}</DialogTitle>
           <DialogDescription>
@@ -187,7 +187,7 @@ export function TaskDialog({ open, onOpenChange, onSuccess, task, projectId, pro
                   {projects.map((project) => (
                     <SelectItem key={project.id} value={project.id}>
                       <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: project.color }} />
+                        <span>{project.emoji || "📋"}</span>
                         {project.name}
                       </div>
                     </SelectItem>
@@ -220,7 +220,7 @@ export function TaskDialog({ open, onOpenChange, onSuccess, task, projectId, pro
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading} className="glow-effect">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {task ? "Update Task" : "Create Task"}
             </Button>

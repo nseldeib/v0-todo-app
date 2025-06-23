@@ -13,6 +13,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Plus, Search, CheckCircle2, Clock, AlertTriangle } from "lucide-react"
 import type { Project, Task } from "@/lib/types"
+import { ProjectDialog } from "@/components/project-dialog"
+import { TaskDialog } from "@/components/task-dialog"
 
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null)
@@ -379,6 +381,16 @@ export default function DashboardPage() {
           </TabsContent>
         </Tabs>
       </div>
+      {/* Dialogs */}
+      <ProjectDialog open={projectDialogOpen} onOpenChange={setProjectDialogOpen} onSuccess={fetchData} />
+
+      <TaskDialog
+        open={taskDialogOpen}
+        onOpenChange={setTaskDialogOpen}
+        onSuccess={fetchData}
+        projectId={selectedProjectId}
+        projects={projects}
+      />
     </div>
   )
 }
