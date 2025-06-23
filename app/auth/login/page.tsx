@@ -35,8 +35,8 @@ export default function LoginPage() {
       if (error) {
         setError(error.message)
       } else {
-        router.push("/dashboard")
-        router.refresh()
+        // Force a hard refresh to trigger middleware
+        window.location.href = "/dashboard"
       }
     } catch (err) {
       setError("An unexpected error occurred")

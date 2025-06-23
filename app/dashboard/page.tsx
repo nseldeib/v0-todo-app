@@ -43,13 +43,21 @@ export default function DashboardPage() {
   }, [tasks, searchQuery, statusFilter])
 
   const checkUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) {
-      router.push("/auth/login")
-    } else {
+    try {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser()
+
+      if (error || !user) {
+        router.push("/auth/login")
+        return
+      }
+
       setUser(user)
+    } catch (error) {
+      console.error("Error checking user:", error)
+      router.push("/auth/login")
     }
   }
 
