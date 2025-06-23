@@ -2,83 +2,61 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { createClient } from "@/lib/supabase/client"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Loader2 } from "lucide-react"
-import type { Project } from "@/lib/types"
 
 interface ProjectDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onSuccess: () => void
-  project?: Project
 }
 
-const projectEmojis = ["📋", "💼", "🎯", "📚", "🏠", "💡", "🚀", "⭐", "🔥", "💎"]
+const EMOJI_OPTIONS = ["📋", "💼", "🎯", "🚀", "💡", "🔥", "⭐", "🎨", "📊", "🔧", "📱", "💻", "🏠", "🎓", "💪", "🌟"]
 
-export function ProjectDialog({ open, onOpenChange, onSuccess, project }: ProjectDialogProps) {
+export function ProjectDialog({ open, onOpenChange, onSuccess }: ProjectDialogProps) {
+  const [loading, setLoading] = useState(false)
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
   const [emoji, setEmoji] = useState("📋")
-  const [loading, setLoading] = useState(false)
   const supabase = createClient()
-
-  useEffect(() => {
-    if (project) {
-      setName(project.name)
-      setDescription(project.description || "")
-      setEmoji(project.emoji || "📋")
-    } else {
-      setName("")
-      setDescription("")
-      setEmoji("📋")
-    }
-  }, [project])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
+    if (!name.trim()) return
 
+    setLoading(true)
     try {
       const {
         data: { user },
       } = await supabase.auth.getUser()
-      if (!user) throw new Error("No user found")
+      if (!user) return
 
-      const projectData = {
-        name,
-        description: description || null,
-        emoji,
+      const { error } = await supabase.from("projects").insert({
+        name: name.trim(),
+        description: description.trim() || null,
+        emoji: emoji,
         user_id: user.id,
-        updated_at: new Date().toISOString(),
+      })
+
+      if (error) {
+        console.error("Error creating project:", error)
+        return
       }
 
-      if (project) {
-        const { error } = await supabase.from("projects").update(projectData).eq("id", project.id)
-
-        if (error) throw error
-      } else {
-        const { error } = await supabase.from("projects").insert([projectData])
-
-        if (error) throw error
-      }
+      // Reset form
+      setName("")
+      setDescription("")
+      setEmoji("📋")
 
       onSuccess()
       onOpenChange(false)
     } catch (error) {
-      console.error("Error saving project:", error)
+      console.error("Error creating project:", error)
     } finally {
       setLoading(false)
     }
@@ -86,62 +64,72 @@ export function ProjectDialog({ open, onOpenChange, onSuccess, project }: Projec
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] glass-effect">
+      <DialogContent className="bg-slate-800 border-slate-700 text-white max-w-md">
         <DialogHeader>
-          <DialogTitle>{project ? "Edit Project" : "Create New Project"}</DialogTitle>
-          <DialogDescription>
-            {project ? "Update your project details." : "Add a new project to organize your tasks."}
-          </DialogDescription>
+          <DialogTitle className="text-xl font-semibold">Create New Project</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="name">Project Name</Label>
-              <Input
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter project name"
-                required
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Enter project description (optional)"
-                rows={3}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label>Project Emoji</Label>
-              <div className="flex flex-wrap gap-2">
-                {projectEmojis.map((emojiOption) => (
-                  <button
-                    key={emojiOption}
-                    type="button"
-                    className={`w-10 h-10 rounded-lg border-2 transition-all text-xl hover:scale-105 ${
-                      emoji === emojiOption ? "border-primary scale-110 glow-effect" : "border-border"
-                    }`}
-                    onClick={() => setEmoji(emojiOption)}
-                  >
-                    {emojiOption}
-                  </button>
-                ))}
-              </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Name */}
+          <div className="space-y-2">
+            <Label htmlFor="name" className="text-sm font-medium">
+              Project Name *
+            </Label>
+            <Input
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter project name..."
+              required
+              className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+            />
+          </div>
+
+          {/* Description */}
+          <div className="space-y-2">
+            <Label htmlFor="description" className="text-sm font-medium">
+              Description (Optional)
+            </Label>
+            <Textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Add project description..."
+              rows={3}
+              className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 resize-none"
+            />
+          </div>
+
+          {/* Emoji Selection */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Choose an Icon</Label>
+            <div className="flex flex-wrap gap-2">
+              {EMOJI_OPTIONS.map((emojiOption) => (
+                <Button
+                  key={emojiOption}
+                  type="button"
+                  variant={emoji === emojiOption ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setEmoji(emojiOption)}
+                  className={`w-10 h-10 p-0 ${
+                    emoji === emojiOption
+                      ? "bg-purple-600 border-purple-500"
+                      : "bg-slate-700 border-slate-600 hover:bg-slate-600"
+                  }`}
+                >
+                  {emojiOption}
+                </Button>
+              ))}
             </div>
           </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={loading} className="glow-effect">
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {project ? "Update Project" : "Create Project"}
-            </Button>
-          </DialogFooter>
+
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            disabled={loading || !name.trim()}
+            className="w-full h-12 bg-gradient-to-r from-cyan-600 via-purple-600 to-pink-600 hover:from-cyan-700 hover:via-purple-700 hover:to-pink-700 rounded-xl"
+          >
+            {loading ? "Creating..." : "Create Project"}
+          </Button>
         </form>
       </DialogContent>
     </Dialog>
