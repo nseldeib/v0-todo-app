@@ -21,20 +21,194 @@ const LoginPageClient = () => {
     setError("")
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      // First try to sign in
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
-      if (error) {
-        setError(error.message)
-      } else {
-        router.push("/dashboard")
+      if (signInError) {
+        // If it's the demo user and login failed, try to create the account
+        if (email === "demo@taskflow.dev" && password === "demo123456") {
+          const { error: signUpError } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              emailRedirectTo: undefined, // Skip email confirmation for demo
+            },
+          })
+
+          if (signUpError) {
+            setError("Failed to create demo account: " + signUpError.message)
+            return
+          }
+
+          // Try to sign in again after creating the account
+          const { error: secondSignInError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          })
+
+          if (secondSignInError) {
+            setError("Demo account created but login failed: " + secondSignInError.message)
+            return
+          }
+
+          // Create demo data for the new user
+          await createDemoData()
+        } else {
+          setError(signInError.message)
+          return
+        }
       }
+
+      router.push("/dashboard")
     } catch (err) {
       setError("An unexpected error occurred")
     } finally {
       setLoading(false)
+    }
+  }
+
+  const createDemoData = async () => {
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) return
+
+      // Create demo projects
+      const { data: projects, error: projectError } = await supabase
+        .from("projects")
+        .insert([
+          {
+            user_id: user.id,
+            name: "Website Redesign",
+            description: "Complete overhaul of company website",
+            emoji: "🎨",
+            color: "blue",
+          },
+          {
+            user_id: user.id,
+            name: "Mobile App",
+            description: "Cross-platform mobile application",
+            emoji: "📱",
+            color: "purple",
+          },
+          {
+            user_id: user.id,
+            name: "Marketing Campaign",
+            description: "Q1 product launch campaign",
+            emoji: "📢",
+            color: "green",
+          },
+        ])
+        .select()
+
+      if (projectError) {
+        console.error("Error creating demo projects:", projectError)
+        return
+      }
+
+      // Create demo tasks
+      const { error: taskError } = await supabase.from("tasks").insert([
+        {
+          user_id: user.id,
+          project_id: projects?.[0]?.id,
+          title: "Create wireframes",
+          description: "Design wireframes for main pages",
+          status: "completed",
+          priority: "high",
+          emoji: "📐",
+          is_important: true,
+        },
+        {
+          user_id: user.id,
+          project_id: projects?.[1]?.id,
+          title: "Setup development environment",
+          description: "Configure React Native environment",
+          status: "completed",
+          priority: "high",
+          emoji: "⚙️",
+          is_important: true,
+        },
+        {
+          user_id: user.id,
+          project_id: projects?.[0]?.id,
+          title: "Design system setup",
+          description: "Establish design system",
+          status: "in_progress",
+          priority: "high",
+          emoji: "🎨",
+          is_important: true,
+        },
+        {
+          user_id: user.id,
+          project_id: projects?.[1]?.id,
+          title: "User authentication",
+          description: "Implement login/signup",
+          status: "in_progress",
+          priority: "high",
+          emoji: "🔐",
+          is_important: true,
+        },
+        {
+          user_id: user.id,
+          project_id: projects?.[2]?.id,
+          title: "Content calendar",
+          description: "Plan social media content",
+          status: "completed",
+          priority: "medium",
+          emoji: "📅",
+          is_important: false,
+        },
+        {
+          user_id: user.id,
+          project_id: projects?.[0]?.id,
+          title: "Homepage mockup",
+          description: "Create homepage design",
+          status: "todo",
+          priority: "medium",
+          emoji: "🏠",
+          is_important: false,
+        },
+        {
+          user_id: user.id,
+          project_id: projects?.[1]?.id,
+          title: "API integration",
+          description: "Connect to backend APIs",
+          status: "todo",
+          priority: "medium",
+          emoji: "🔌",
+          is_important: false,
+        },
+        {
+          user_id: user.id,
+          project_id: projects?.[2]?.id,
+          title: "Email campaign design",
+          description: "Design email templates",
+          status: "in_progress",
+          priority: "medium",
+          emoji: "📧",
+          is_important: false,
+        },
+        {
+          user_id: user.id,
+          project_id: projects?.[2]?.id,
+          title: "Influencer outreach",
+          description: "Contact potential influencers",
+          status: "todo",
+          priority: "low",
+          emoji: "🤝",
+          is_important: false,
+        },
+      ])
+
+      if (taskError) {
+        console.error("Error creating demo tasks:", taskError)
+      }
+    } catch (error) {
+      console.error("Error creating demo data:", error)
     }
   }
 
