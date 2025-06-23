@@ -85,22 +85,16 @@ const LoginPageClient = () => {
             user_id: user.id,
             name: "Website Redesign",
             description: "Complete overhaul of company website",
-            emoji: "🎨",
-            color: "blue",
           },
           {
             user_id: user.id,
             name: "Mobile App",
             description: "Cross-platform mobile application",
-            emoji: "📱",
-            color: "purple",
           },
           {
             user_id: user.id,
             name: "Marketing Campaign",
             description: "Q1 product launch campaign",
-            emoji: "📢",
-            color: "green",
           },
         ])
         .select()
@@ -119,8 +113,6 @@ const LoginPageClient = () => {
           description: "Design wireframes for main pages",
           status: "completed",
           priority: "high",
-          emoji: "📐",
-          is_important: true,
         },
         {
           user_id: user.id,
@@ -129,8 +121,6 @@ const LoginPageClient = () => {
           description: "Configure React Native environment",
           status: "completed",
           priority: "high",
-          emoji: "⚙️",
-          is_important: true,
         },
         {
           user_id: user.id,
@@ -139,8 +129,6 @@ const LoginPageClient = () => {
           description: "Establish design system",
           status: "in_progress",
           priority: "high",
-          emoji: "🎨",
-          is_important: true,
         },
         {
           user_id: user.id,
@@ -149,8 +137,6 @@ const LoginPageClient = () => {
           description: "Implement login/signup",
           status: "in_progress",
           priority: "high",
-          emoji: "🔐",
-          is_important: true,
         },
         {
           user_id: user.id,
@@ -159,8 +145,6 @@ const LoginPageClient = () => {
           description: "Plan social media content",
           status: "completed",
           priority: "medium",
-          emoji: "📅",
-          is_important: false,
         },
         {
           user_id: user.id,
@@ -169,8 +153,6 @@ const LoginPageClient = () => {
           description: "Create homepage design",
           status: "todo",
           priority: "medium",
-          emoji: "🏠",
-          is_important: false,
         },
         {
           user_id: user.id,
@@ -179,8 +161,6 @@ const LoginPageClient = () => {
           description: "Connect to backend APIs",
           status: "todo",
           priority: "medium",
-          emoji: "🔌",
-          is_important: false,
         },
         {
           user_id: user.id,
@@ -189,8 +169,6 @@ const LoginPageClient = () => {
           description: "Design email templates",
           status: "in_progress",
           priority: "medium",
-          emoji: "📧",
-          is_important: false,
         },
         {
           user_id: user.id,
@@ -199,8 +177,6 @@ const LoginPageClient = () => {
           description: "Contact potential influencers",
           status: "todo",
           priority: "low",
-          emoji: "🤝",
-          is_important: false,
         },
       ])
 
