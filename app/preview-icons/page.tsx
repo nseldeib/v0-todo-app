@@ -164,6 +164,226 @@ const IconOption6 = ({ size = 32 }: { size?: number }) => {
   )
 }
 
+// Modern edgy icons with dark theme
+const IconOption7 = ({ size = 32 }: { size?: number }) => {
+  const strokeWidth = size * 0.0625
+  return (
+    <div
+      style={{
+        background: "linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%)",
+        width: size,
+        height: size,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: size * 0.25,
+        border: `1px solid #16213e`,
+      }}
+    >
+      <svg width={size * 0.6} height={size * 0.6} viewBox="0 0 24 24" fill="none">
+        <path
+          d="M9 12l2 2 4-4"
+          stroke="#00d4ff"
+          strokeWidth={strokeWidth * 16}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"
+          stroke="#00d4ff"
+          strokeWidth={strokeWidth * 12}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="rgba(0, 212, 255, 0.1)"
+        />
+      </svg>
+    </div>
+  )
+}
+
+const IconOption8 = ({ size = 32 }: { size?: number }) => {
+  const barWidth = size * 0.125
+  const barHeight1 = size * 0.25
+  const barHeight2 = size * 0.375
+  const barHeight3 = size * 0.1875
+  return (
+    <div
+      style={{
+        background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%)",
+        width: size,
+        height: size,
+        display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "center",
+        borderRadius: size * 0.1875,
+        padding: size * 0.125,
+        gap: size * 0.0625,
+        border: "1px solid #333",
+      }}
+    >
+      <div style={{ width: barWidth, height: barHeight1, background: "#ff6b6b", borderRadius: 1 }} />
+      <div style={{ width: barWidth, height: barHeight2, background: "#4ecdc4", borderRadius: 1 }} />
+      <div style={{ width: barWidth, height: barHeight3, background: "#45b7d1", borderRadius: 1 }} />
+      <div style={{ width: barWidth, height: barHeight2, background: "#96ceb4", borderRadius: 1 }} />
+    </div>
+  )
+}
+
+const IconOption9 = ({ size = 32 }: { size?: number }) => {
+  return (
+    <div
+      style={{
+        background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+        width: size,
+        height: size,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: size * 0.1875,
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "linear-gradient(45deg, transparent 30%, rgba(0, 212, 255, 0.1) 50%, transparent 70%)",
+        }}
+      />
+      <div
+        style={{
+          fontSize: size * 0.5,
+          color: "#00d4ff",
+          fontWeight: "900",
+          fontFamily: "system-ui",
+          textShadow: "0 0 10px rgba(0, 212, 255, 0.5)",
+        }}
+      >
+        ⚡
+      </div>
+    </div>
+  )
+}
+
+const IconOption10 = ({ size = 32 }: { size?: number }) => {
+  const hexSize = size * 0.3
+  return (
+    <div
+      style={{
+        background: "radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%)",
+        width: size,
+        height: size,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: size * 0.1875,
+        border: "1px solid #333",
+      }}
+    >
+      <svg width={size * 0.75} height={size * 0.75} viewBox="0 0 24 24" fill="none">
+        <polygon
+          points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5"
+          stroke="#ff6b6b"
+          strokeWidth="2"
+          fill="rgba(255, 107, 107, 0.1)"
+        />
+        <circle cx="12" cy="12" r="3" fill="#ff6b6b" />
+      </svg>
+    </div>
+  )
+}
+
+const IconOption11 = ({ size = 32 }: { size?: number }) => {
+  return (
+    <div
+      style={{
+        background: "linear-gradient(135deg, #2d1b69 0%, #11998e 100%)",
+        width: size,
+        height: size,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: size * 0.3,
+        position: "relative",
+      }}
+    >
+      <div
+        style={{
+          width: size * 0.4,
+          height: size * 0.4,
+          background: "rgba(255, 255, 255, 0.9)",
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: size * 0.25,
+          fontWeight: "bold",
+          color: "#2d1b69",
+        }}
+      >
+        T
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          top: size * 0.125,
+          right: size * 0.125,
+          width: size * 0.1875,
+          height: size * 0.1875,
+          background: "#00ff88",
+          borderRadius: "50%",
+          boxShadow: "0 0 8px rgba(0, 255, 136, 0.6)",
+        }}
+      />
+    </div>
+  )
+}
+
+const IconOption12 = ({ size = 32 }: { size?: number }) => {
+  return (
+    <div
+      style={{
+        background: "linear-gradient(135deg, #0c0c0c 0%, #1f1f1f 100%)",
+        width: size,
+        height: size,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: size * 0.1875,
+        border: "1px solid #333",
+        position: "relative",
+      }}
+    >
+      <svg width={size * 0.6} height={size * 0.6} viewBox="0 0 24 24" fill="none">
+        <path d="M3 6h18M3 12h18M3 18h18" stroke="url(#gradient)" strokeWidth="2.5" strokeLinecap="round" />
+        <defs>
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#ff6b6b" />
+            <stop offset="33%" stopColor="#4ecdc4" />
+            <stop offset="66%" stopColor="#45b7d1" />
+            <stop offset="100%" stopColor="#96ceb4" />
+          </linearGradient>
+        </defs>
+      </svg>
+      <div
+        style={{
+          position: "absolute",
+          top: size * 0.1875,
+          right: size * 0.1875,
+          width: size * 0.125,
+          height: size * 0.125,
+          background: "#00ff88",
+          borderRadius: "50%",
+        }}
+      />
+    </div>
+  )
+}
+
 export default function PreviewIconsPage() {
   const iconOptions = [
     {
@@ -207,6 +427,48 @@ export default function PreviewIconsPage() {
       description: "Diamond with pink gradient - represents focus and clarity",
       component: IconOption6,
       style: "Abstract modern",
+    },
+    {
+      id: 7,
+      name: "Neon Circuit",
+      description: "Dark theme with neon blue checkmark - tech-forward and modern",
+      component: IconOption7,
+      style: "Cyberpunk minimal",
+    },
+    {
+      id: 8,
+      name: "Data Bars",
+      description: "Dark analytics bars with vibrant colors - represents progress tracking",
+      component: IconOption8,
+      style: "Dark analytics",
+    },
+    {
+      id: 9,
+      name: "Lightning Bolt",
+      description: "Electric blue lightning on dark gradient - represents speed and efficiency",
+      component: IconOption9,
+      style: "Electric modern",
+    },
+    {
+      id: 10,
+      name: "Hex Core",
+      description: "Geometric hexagon with glowing center - tech and gaming inspired",
+      component: IconOption10,
+      style: "Gaming tech",
+    },
+    {
+      id: 11,
+      name: "Orb Badge",
+      description: "Circular design with notification dot - modern app aesthetic",
+      component: IconOption11,
+      style: "Modern orb",
+    },
+    {
+      id: 12,
+      name: "Gradient Lines",
+      description: "Rainbow gradient task lines on dark background - vibrant and modern",
+      component: IconOption12,
+      style: "Vibrant dark",
     },
   ]
 
