@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip"
+import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Plus, Search, CheckCircle2, Clock, AlertTriangle, Filter, MoreHorizontal, Calendar } from "lucide-react"
 import type { Project, Task } from "@/lib/types"
 
@@ -153,15 +154,29 @@ export default function TasksPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
-      <div className="container mx-auto px-4 lg:px-8 py-6 lg:py-8 space-y-6">
-        <div className="flex items-center justify-between">
+      {/* Mobile Header */}
+      <header className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-xl border-b border-slate-700/50 md:hidden">
+        <div className="flex items-center justify-between p-4">
+          <SidebarTrigger className="text-white" />
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+              <CheckCircle2 className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-lg font-bold text-white">Tasks</span>
+          </div>
+          <div className="w-10" /> {/* Spacer for centering */}
+        </div>
+      </header>
+
+      <div className="p-4 md:p-6 lg:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl lg:text-3xl font-bold text-white">Tasks</h1>
             <p className="text-slate-300">Manage your daily tasks and priorities</p>
           </div>
           <Button
             onClick={() => setTaskDialogOpen(true)}
-            className="h-12 bg-gradient-to-r from-cyan-600 via-purple-600 to-pink-600 hover:from-cyan-700 hover:via-purple-700 hover:to-pink-700 rounded-2xl px-6"
+            className="h-12 bg-gradient-to-r from-cyan-600 via-purple-600 to-pink-600 hover:from-cyan-700 hover:via-purple-700 hover:to-pink-700 rounded-2xl px-6 shadow-lg shadow-purple-500/25"
           >
             <Plus className="w-5 h-5 mr-2" />
             New Task
@@ -245,7 +260,7 @@ export default function TasksPage() {
 
         {/* Tasks List */}
         <ScrollArea className="h-[800px]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6 pr-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6 pr-4">
             {filteredTasks.map((task) => (
               <Card
                 key={task.id}
@@ -338,7 +353,7 @@ export default function TasksPage() {
                   </div>
                   <Button
                     onClick={() => setTaskDialogOpen(true)}
-                    className="h-12 lg:h-14 bg-gradient-to-r from-cyan-600 via-purple-600 to-pink-600 rounded-2xl px-8 text-base lg:text-lg"
+                    className="h-12 lg:h-14 bg-gradient-to-r from-cyan-600 via-purple-600 to-pink-600 rounded-2xl px-8 text-base lg:text-lg shadow-lg shadow-purple-500/25"
                   >
                     <Plus className="w-5 h-5 mr-2" />
                     Create Your First Task

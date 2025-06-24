@@ -274,6 +274,90 @@ body {
   --border: 217.2 32.6% 17.5%;
   --input: 217.2 32.6% 17.5%;
   --ring: 262.1 83.3% 57.8%;
+
+  /* Sidebar spacing and layout improvements */
+  --sidebar-width: 16rem;
+  --sidebar-width-mobile: 18rem;
+  --sidebar-width-icon: 3rem;
+}
+
+/* Sidebar-specific styles */
+.sidebar-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 768px) {
+  .sidebar-layout {
+    flex-direction: column;
+  }
+
+  /* Ensure mobile content doesn't overlap */
+  .mobile-content {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Desktop sidebar spacing */
+@media (min-width: 768px) {
+  .sidebar-content {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+  }
+
+  .sidebar-content.collapsed {
+    margin-left: var(--sidebar-width-icon);
+    width: calc(100% - var(--sidebar-width-icon));
+  }
+}
+
+/* Improved touch targets for mobile */
+@media (max-width: 768px) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Larger tap targets for buttons */
+  button {
+    min-height: 44px;
+  }
+
+  /* Better spacing for mobile cards */
+  .mobile-card {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Smooth transitions for sidebar */
+.sidebar-transition {
+  transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+/* Fix for mobile viewport units */
+.mobile-vh {
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile browsers */
+}
+
+/* Improved mobile scroll behavior */
+@media (max-width: 768px) {
+  .mobile-scroll {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+  }
+}
+
+/* Better mobile form inputs */
+@media (max-width: 768px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
 }
 
 @layer base {

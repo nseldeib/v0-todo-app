@@ -131,8 +131,8 @@ export function DashboardSidebar({
   ]
 
   return (
-    <Sidebar className="border-r border-slate-700/50">
-      <SidebarHeader className="border-b border-slate-700/50 p-4">
+    <Sidebar className="bg-slate-900/95 backdrop-blur-xl border-r border-slate-700/50">
+      <SidebarHeader className="border-b border-slate-700/50 p-4 bg-slate-800/50">
         {/* Logo */}
         <div className="flex items-center space-x-3 mb-4">
           <div className="w-10 h-10 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
@@ -151,7 +151,7 @@ export function DashboardSidebar({
           <Button
             onClick={onCreateProject}
             size="sm"
-            className="h-9 bg-gradient-to-r from-cyan-600 via-purple-600 to-pink-600 hover:from-cyan-700 hover:via-purple-700 hover:to-pink-700 rounded-xl text-xs"
+            className="h-9 bg-gradient-to-r from-cyan-600 via-purple-600 to-pink-600 hover:from-cyan-700 hover:via-purple-700 hover:to-pink-700 rounded-xl text-xs font-medium"
           >
             <Plus className="w-4 h-4 mr-1" />
             Project
@@ -160,7 +160,7 @@ export function DashboardSidebar({
             onClick={onCreateTask}
             variant="outline"
             size="sm"
-            className="h-9 border-slate-600 text-slate-300 hover:border-slate-500 hover:bg-slate-800 rounded-xl text-xs"
+            className="h-9 border-slate-600 text-slate-300 hover:border-slate-500 hover:bg-slate-800 rounded-xl text-xs font-medium"
           >
             <Plus className="w-4 h-4 mr-1" />
             Task
@@ -168,24 +168,24 @@ export function DashboardSidebar({
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-2">
+      <SidebarContent className="px-2 py-4">
         {/* Navigation */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-400 font-medium">Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-slate-400 font-medium mb-2">Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-1">
               {navigationItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={item.isActive}>
-                    <Link href={item.url} className="flex items-center justify-between">
+                  <SidebarMenuButton asChild isActive={item.isActive} className="h-10">
+                    <Link href={item.url} className="flex items-center justify-between w-full">
                       <div className="flex items-center">
                         <item.icon className="w-4 h-4 mr-3" />
-                        <span>{item.title}</span>
+                        <span className="font-medium">{item.title}</span>
                       </div>
                       {item.badge !== undefined && item.badge > 0 && (
                         <Badge
                           variant="secondary"
-                          className="ml-auto bg-slate-700/50 text-slate-300 border-slate-600/50 text-xs"
+                          className="ml-auto bg-slate-700/50 text-slate-300 border-slate-600/50 text-xs h-5 px-2"
                         >
                           {item.badge}
                         </Badge>
@@ -199,17 +199,20 @@ export function DashboardSidebar({
         </SidebarGroup>
 
         {/* Quick Stats */}
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-400 font-medium">Quick Stats</SidebarGroupLabel>
+        <SidebarGroup className="mt-6">
+          <SidebarGroupLabel className="text-slate-400 font-medium mb-2">Quick Stats</SidebarGroupLabel>
           <SidebarGroupContent>
             <div className="space-y-2">
               {quickStats.map((stat) => (
-                <div key={stat.title} className="flex items-center justify-between p-2 rounded-lg bg-slate-800/30">
+                <div
+                  key={stat.title}
+                  className="flex items-center justify-between p-3 rounded-lg bg-slate-800/30 border border-slate-700/30"
+                >
                   <div className="flex items-center space-x-2">
                     <stat.icon className={`w-4 h-4 ${stat.color}`} />
-                    <span className="text-sm text-slate-300">{stat.title}</span>
+                    <span className="text-sm text-slate-300 font-medium">{stat.title}</span>
                   </div>
-                  <span className="text-sm font-medium text-white">{stat.value}</span>
+                  <span className="text-sm font-bold text-white">{stat.value}</span>
                 </div>
               ))}
             </div>
@@ -217,13 +220,13 @@ export function DashboardSidebar({
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-slate-700/50 p-4">
+      <SidebarFooter className="border-t border-slate-700/50 p-4 bg-slate-800/50">
         {/* User Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="w-full justify-start h-12 px-3">
+            <Button variant="ghost" className="w-full justify-start h-12 px-3 hover:bg-slate-700/50">
               <Avatar className="h-8 w-8 mr-3">
-                <AvatarFallback className="bg-gradient-to-r from-cyan-500 to-purple-500 text-white text-sm">
+                <AvatarFallback className="bg-gradient-to-r from-cyan-500 to-purple-500 text-white text-sm font-bold">
                   {getInitials(userEmail)}
                 </AvatarFallback>
               </Avatar>

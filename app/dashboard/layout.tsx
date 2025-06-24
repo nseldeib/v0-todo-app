@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { DashboardSidebar } from "@/components/dashboard-sidebar"
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { CheckCircle2 } from "lucide-react"
 import type { Project, Task } from "@/lib/types"
@@ -156,22 +156,7 @@ export default function DashboardLayout({
             todoTasks: tasks.filter((t) => t.status === "todo").length,
           }}
         />
-        <SidebarInset>
-          {/* Mobile Header */}
-          <header className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-slate-700/50 lg:hidden">
-            <div className="flex items-center justify-between p-4">
-              <SidebarTrigger className="text-white" />
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-                  <CheckCircle2 className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-lg font-bold text-white">TaskFlow</span>
-              </div>
-              <div className="w-10" /> {/* Spacer for centering */}
-            </div>
-          </header>
-          {children}
-        </SidebarInset>
+        <SidebarInset className="flex-1">{children}</SidebarInset>
       </SidebarProvider>
     </TooltipProvider>
   )
