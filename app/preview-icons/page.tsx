@@ -11,42 +11,42 @@ export default function PreviewIconsPage() {
       id: 1,
       name: "Minimalist Checkmark",
       description: "Purple gradient with checkmark - represents task completion",
-      src: "/icon-option-1",
+      route: "/icon-option-1",
       style: "Modern minimalist",
     },
     {
       id: 2,
       name: "Geometric Squares",
       description: "Colored squares on dark background - represents organization",
-      src: "/icon-option-2",
+      route: "/icon-option-2",
       style: "Clean geometric",
     },
     {
       id: 3,
       name: "TaskFlow 'T'",
       description: "Bold 'T' letter with blue gradient - brand focused",
-      src: "/icon-option-3",
+      route: "/icon-option-3",
       style: "Typography based",
     },
     {
       id: 4,
       name: "Task List",
       description: "Clean task list with colored dots - functional design",
-      src: "/icon-option-4",
+      route: "/icon-option-4",
       style: "Functional minimal",
     },
     {
       id: 5,
       name: "Progress Circle",
       description: "Circular progress indicator - represents productivity",
-      src: "/icon-option-5",
+      route: "/icon-option-5",
       style: "Progress focused",
     },
     {
       id: 6,
       name: "Diamond Shape",
       description: "Diamond with pink gradient - represents focus and clarity",
-      src: "/icon-option-6",
+      route: "/icon-option-6",
       style: "Abstract modern",
     },
   ]
@@ -87,25 +87,34 @@ export default function PreviewIconsPage() {
               <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
                 <div className="flex flex-col items-center gap-2">
                   <img
-                    src={option.src || "/placeholder.svg"}
+                    src={`${option.route}?size=32`}
                     alt={option.name}
                     className="w-8 h-8 rounded-md shadow-sm"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none"
+                    }}
                   />
                   <span className="text-xs text-muted-foreground">32px</span>
                 </div>
                 <div className="flex flex-col items-center gap-2">
                   <img
-                    src={option.src || "/placeholder.svg"}
+                    src={`${option.route}?size=48`}
                     alt={option.name}
                     className="w-12 h-12 rounded-md shadow-sm"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none"
+                    }}
                   />
                   <span className="text-xs text-muted-foreground">48px</span>
                 </div>
                 <div className="flex flex-col items-center gap-2">
                   <img
-                    src={option.src || "/placeholder.svg"}
+                    src={`${option.route}?size=64`}
                     alt={option.name}
                     className="w-16 h-16 rounded-lg shadow-sm"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none"
+                    }}
                   />
                   <span className="text-xs text-muted-foreground">64px</span>
                 </div>
@@ -118,7 +127,7 @@ export default function PreviewIconsPage() {
                   variant="outline"
                   size="sm"
                   className="flex-1"
-                  onClick={() => window.open(option.src, "_blank")}
+                  onClick={() => window.open(option.route, "_blank")}
                 >
                   <Download className="h-4 w-4 mr-2" />
                   View Full Size
