@@ -2,8 +2,167 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Copy, Download } from "lucide-react"
+import { Copy, Check } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
+
+// Icon components rendered directly
+const IconOption1 = ({ size = 32 }: { size?: number }) => (
+  <div
+    style={{
+      fontSize: size * 0.5625,
+      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      width: size,
+      height: size,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "white",
+      borderRadius: size * 0.1875,
+      fontWeight: "bold",
+    }}
+  >
+    ✓
+  </div>
+)
+
+const IconOption2 = ({ size = 32 }: { size?: number }) => {
+  const squareSize = size * 0.1875
+  const gap = size * 0.0625
+  return (
+    <div
+      style={{
+        background: "#1f2937",
+        width: size,
+        height: size,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: size * 0.1875,
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", gap }}>
+        <div style={{ display: "flex", gap }}>
+          <div style={{ width: squareSize, height: squareSize, background: "#10b981", borderRadius: 1 }} />
+          <div style={{ width: squareSize, height: squareSize, background: "#3b82f6", borderRadius: 1 }} />
+        </div>
+        <div style={{ display: "flex", gap }}>
+          <div style={{ width: squareSize, height: squareSize, background: "#f59e0b", borderRadius: 1 }} />
+          <div style={{ width: squareSize, height: squareSize, background: "#ef4444", borderRadius: 1 }} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const IconOption3 = ({ size = 32 }: { size?: number }) => (
+  <div
+    style={{
+      fontSize: size * 0.625,
+      background: "linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%)",
+      width: size,
+      height: size,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "white",
+      fontWeight: "bold",
+      borderRadius: size * 0.1875,
+      fontFamily: "system-ui",
+    }}
+  >
+    T
+  </div>
+)
+
+const IconOption4 = ({ size = 32 }: { size?: number }) => {
+  const dotSize = size * 0.125
+  const lineHeight = size * 0.0625
+  const gap = size * 0.09375
+  return (
+    <div
+      style={{
+        background: "#ffffff",
+        width: size,
+        height: size,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: size * 0.1875,
+        border: "1px solid #e5e7eb",
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", gap, alignItems: "flex-start" }}>
+        <div style={{ display: "flex", alignItems: "center", gap }}>
+          <div style={{ width: dotSize, height: dotSize, background: "#10b981", borderRadius: "50%" }} />
+          <div style={{ width: size * 0.375, height: lineHeight, background: "#6b7280", borderRadius: 1 }} />
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap }}>
+          <div style={{ width: dotSize, height: dotSize, background: "#3b82f6", borderRadius: "50%" }} />
+          <div style={{ width: size * 0.3125, height: lineHeight, background: "#6b7280", borderRadius: 1 }} />
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap }}>
+          <div style={{ width: dotSize, height: dotSize, background: "#f59e0b", borderRadius: "50%" }} />
+          <div style={{ width: size * 0.25, height: lineHeight, background: "#6b7280", borderRadius: 1 }} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const IconOption5 = ({ size = 32 }: { size?: number }) => {
+  const circleSize = size * 0.5
+  const borderWidth = size * 0.09375
+  return (
+    <div
+      style={{
+        background: "linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%)",
+        width: size,
+        height: size,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: size * 0.1875,
+      }}
+    >
+      <div
+        style={{
+          width: circleSize,
+          height: circleSize,
+          border: `${borderWidth}px solid rgba(255,255,255,0.3)`,
+          borderTop: `${borderWidth}px solid white`,
+          borderRadius: "50%",
+        }}
+      />
+    </div>
+  )
+}
+
+const IconOption6 = ({ size = 32 }: { size?: number }) => {
+  const diamondSize = size * 0.375
+  return (
+    <div
+      style={{
+        background: "linear-gradient(135deg, #ec4899 0%, #be185d 100%)",
+        width: size,
+        height: size,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: size * 0.1875,
+      }}
+    >
+      <div
+        style={{
+          width: diamondSize,
+          height: diamondSize,
+          background: "white",
+          transform: "rotate(45deg)",
+          borderRadius: size * 0.0625,
+        }}
+      />
+    </div>
+  )
+}
 
 export default function PreviewIconsPage() {
   const iconOptions = [
@@ -11,42 +170,42 @@ export default function PreviewIconsPage() {
       id: 1,
       name: "Minimalist Checkmark",
       description: "Purple gradient with checkmark - represents task completion",
-      route: "/icon-option-1",
+      component: IconOption1,
       style: "Modern minimalist",
     },
     {
       id: 2,
       name: "Geometric Squares",
       description: "Colored squares on dark background - represents organization",
-      route: "/icon-option-2",
+      component: IconOption2,
       style: "Clean geometric",
     },
     {
       id: 3,
       name: "TaskFlow 'T'",
       description: "Bold 'T' letter with blue gradient - brand focused",
-      route: "/icon-option-3",
+      component: IconOption3,
       style: "Typography based",
     },
     {
       id: 4,
       name: "Task List",
       description: "Clean task list with colored dots - functional design",
-      route: "/icon-option-4",
+      component: IconOption4,
       style: "Functional minimal",
     },
     {
       id: 5,
       name: "Progress Circle",
       description: "Circular progress indicator - represents productivity",
-      route: "/icon-option-5",
+      component: IconOption5,
       style: "Progress focused",
     },
     {
       id: 6,
       name: "Diamond Shape",
       description: "Diamond with pink gradient - represents focus and clarity",
-      route: "/icon-option-6",
+      component: IconOption6,
       style: "Abstract modern",
     },
   ]
@@ -65,103 +224,75 @@ export default function PreviewIconsPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">App Icon Preview</h1>
         <p className="text-muted-foreground">
-          Preview all icon options for your TaskFlow app. Click on any icon to see it larger, or use the copy button to
-          get instructions for implementing it.
+          Preview all icon options for your TaskFlow app. Each icon is shown at different sizes to see how it will look
+          in various contexts.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {iconOptions.map((option) => (
-          <Card key={option.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader className="pb-4">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">{option.name}</CardTitle>
-                <Button variant="outline" size="sm" onClick={() => copyIconCode(option.id)} className="h-8 w-8 p-0">
-                  <Copy className="h-4 w-4" />
-                </Button>
-              </div>
-              <p className="text-sm text-muted-foreground">{option.style}</p>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Icon preview at different sizes */}
-              <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-                <div className="flex flex-col items-center gap-2">
-                  <img
-                    src={`${option.route}?size=32`}
-                    alt={option.name}
-                    className="w-8 h-8 rounded-md shadow-sm"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none"
-                    }}
-                  />
-                  <span className="text-xs text-muted-foreground">32px</span>
+        {iconOptions.map((option) => {
+          const IconComponent = option.component
+          return (
+            <Card key={option.id} className="hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg">{option.name}</CardTitle>
+                  <Button variant="outline" size="sm" onClick={() => copyIconCode(option.id)} className="h-8 w-8 p-0">
+                    <Copy className="h-4 w-4" />
+                  </Button>
                 </div>
-                <div className="flex flex-col items-center gap-2">
-                  <img
-                    src={`${option.route}?size=48`}
-                    alt={option.name}
-                    className="w-12 h-12 rounded-md shadow-sm"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none"
-                    }}
-                  />
-                  <span className="text-xs text-muted-foreground">48px</span>
+                <p className="text-sm text-muted-foreground">{option.style}</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Icon preview at different sizes */}
+                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="flex flex-col items-center gap-2">
+                    <IconComponent size={32} />
+                    <span className="text-xs text-muted-foreground">32px</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <IconComponent size={48} />
+                    <span className="text-xs text-muted-foreground">48px</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <IconComponent size={64} />
+                    <span className="text-xs text-muted-foreground">64px</span>
+                  </div>
                 </div>
-                <div className="flex flex-col items-center gap-2">
-                  <img
-                    src={`${option.route}?size=64`}
-                    alt={option.name}
-                    className="w-16 h-16 rounded-lg shadow-sm"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none"
-                    }}
-                  />
-                  <span className="text-xs text-muted-foreground">64px</span>
-                </div>
-              </div>
 
-              <p className="text-sm text-muted-foreground">{option.description}</p>
+                <p className="text-sm text-muted-foreground">{option.description}</p>
 
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex-1"
-                  onClick={() => window.open(option.route, "_blank")}
-                >
-                  <Download className="h-4 w-4 mr-2" />
-                  View Full Size
+                <Button variant="default" size="sm" className="w-full" onClick={() => copyIconCode(option.id)}>
+                  <Check className="h-4 w-4 mr-2" />
+                  Choose This Icon
                 </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          )
+        })}
       </div>
 
       <div className="mt-8 p-6 bg-blue-50 rounded-lg">
-        <h2 className="text-xl font-semibold mb-3">How to Test as App Icons</h2>
+        <h2 className="text-xl font-semibold mb-3">How to Apply Your Chosen Icon</h2>
         <div className="space-y-3 text-sm">
           <div>
-            <strong>1. Browser Tab Icon:</strong>
+            <strong>1. Choose an icon above</strong>
             <p className="text-muted-foreground ml-4">
-              Rename your chosen option to <code className="bg-white px-1 rounded">app/icon.tsx</code> and refresh your
-              browser to see it in the tab.
+              Click "Choose This Icon" on your preferred option to copy the implementation instructions.
             </p>
           </div>
           <div>
-            <strong>2. PWA Home Screen:</strong>
+            <strong>2. Rename the file:</strong>
             <p className="text-muted-foreground ml-4">
-              Add the app to your phone's home screen to see how it looks as a mobile app icon.
+              Rename <code className="bg-white px-1 rounded">app/icon-option-X.tsx</code> to{" "}
+              <code className="bg-white px-1 rounded">app/icon.tsx</code>
             </p>
           </div>
           <div>
-            <strong>3. Bookmark Icon:</strong>
-            <p className="text-muted-foreground ml-4">Bookmark the page to see how it appears in your bookmarks bar.</p>
-          </div>
-          <div>
-            <strong>4. Different Sizes:</strong>
+            <strong>3. Test it:</strong>
             <p className="text-muted-foreground ml-4">
-              The icons above show how they look at 32px, 48px, and 64px to simulate different contexts.
+              Refresh your browser to see the new icon in the browser tab, bookmark it to see it in bookmarks, or add to
+              home screen on mobile.
             </p>
           </div>
         </div>
